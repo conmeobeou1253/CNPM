@@ -1,0 +1,9 @@
+| Thành viên            | Phần Final Report                                              | Slide trình bày                          | Ghi chú                                                |
+| ----------------      | -------------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------ |
+| **Đức Minh(Leader)**  | **Chương 5.2 – 5.3: Demo + sửa toàn bộ**                       | ** Demo live/video**                     |                                                        |
+| **Dương Bùi**         | **Lời nói đầu + Kết luận & hướng phát triển**                  | **Mở đầu + kết bài**                     | Giới thiệu đề tài + tổng kết kết quả đạt được          |
+| **Chí Hiếu**          | **Chương 1: Khảo sát bài toán (1.1–1.5)**                      | **Bài toán thực tế + yêu cầu nghiệp vụ** | Liên hệ đề tài với thực tế, trình bày bằng sơ đồ/bảng  |
+| **Vinh**              | **Chương 2: Đặc tả yêu cầu (Use case, Actor, phi chức năng)**  | **Tính năng hệ thống + user flow**       | Có thể vẽ sơ đồ Use case tổng quan                     |
+| **Tuấn Ngọc**         | **Chương 3: Phân tích yêu cầu (ERD, lớp phân tích, sequence)** | **Phân tích kỹ thuật (ERD + UML)**       | Cần thể hiện logic phân tích dữ liệu, chức năng        |
+| **Phan Hoàng Quân**   | **Chương 4: Thiết kế hệ thống (kiến trúc, DB, UI mockup)**     | **Thiết kế tổng thể + giao diện**        | Trình bày sơ đồ kiến trúc, UI app                      |
+| **Lê Thành An**       | **Chương 6: Kiểm thử** + **Chương 7: Cài đặt & sử dụng**       | **Kiểm thử + Hướng dẫn chạy**            | Test case, kết quả test, cài đặt, setup local          |
