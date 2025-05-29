@@ -19,6 +19,7 @@ import {
 interface Criterion {
   type: string
   value: string
+  deduct?: number
 }
 
 interface Essay {
@@ -140,6 +141,9 @@ export default function EssaysPage() {
                     {essay.criteria.slice(0, 3).map((criterion, index) => (
                       <li key={index} className="text-sm text-muted-foreground">
                         {criterion.type}: {criterion.value}
+                        {typeof criterion.deduct !== 'undefined' && (
+                          <span> (trừ {criterion.deduct} điểm)</span>
+                        )}
                       </li>
                     ))}
                     {essay.criteria.length > 3 && (

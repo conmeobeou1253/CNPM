@@ -17,6 +17,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 interface Criterion {
   type: string
   value: string
+  deduct?: number
 }
 
 interface Essay {
@@ -31,7 +32,7 @@ export default function EditEssayPage({ params }: { params: { id: string } }) {
   const router = useRouter()
   const [essay, setEssay] = useState<Essay | null>(null)
   const [question, setQuestion] = useState("")
-  const [criteria, setCriteria] = useState<Criterion[]>([{ type: "contains", value: "" }])
+  const [criteria, setCriteria] = useState<Criterion[]>([{ type: "contains", value: "", deduct: 0.5 }])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
@@ -79,7 +80,7 @@ export default function EditEssayPage({ params }: { params: { id: string } }) {
     // Check if we already have a min_words criterion and the new one is also min_words
     const hasMinWords = criteria.some((c) => c.type === "min_words")
     const newCriterionType = hasMinWords ? "contains" : "contains" // Default to contains if min_words exists
-    setCriteria([...criteria, { type: newCriterionType, value: "" }])
+    setCriteria([...criteria, { type: newCriterionType, value: "", deduct: 0.5 }])
   }
 
   // Update the handleCriterionTypeChange function to prevent multiple min_words
@@ -102,6 +103,12 @@ export default function EditEssayPage({ params }: { params: { id: string } }) {
   const handleCriterionValueChange = (value: string, index: number) => {
     const newCriteria = [...criteria]
     newCriteria[index].value = value
+    setCriteria(newCriteria)
+  }
+
+  const handleCriterionDeductChange = (deduct: string, index: number) => {
+    const newCriteria = [...criteria]
+    newCriteria[index].deduct = parseFloat(deduct) || 0.5
     setCriteria(newCriteria)
   }
 
@@ -226,6 +233,18 @@ export default function EditEssayPage({ params }: { params: { id: string } }) {
                       }
                       value={criterion.value}
                       onChange={(e) => handleCriterionValueChange(e.target.value, index)}
+                      required
+                    />
+                  </div>
+                  <div className="w-32">
+                    <Label htmlFor={`criterion-deduct-${index}`}>Deduct (points)</Label>
+                    <Input
+                      id={`criterion-deduct-${index}`}
+                      type="number"
+                      min={0}
+                      step={0.1}
+                      value={criterion.deduct ?? 0.5}
+                      onChange={e => handleCriterionDeductChange(e.target.value, index)}
                       required
                     />
                   </div>

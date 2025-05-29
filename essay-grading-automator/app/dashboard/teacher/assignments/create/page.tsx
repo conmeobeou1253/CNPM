@@ -22,6 +22,7 @@ interface Essay {
 interface Criterion {
   type: string
   value: string
+  deduct?: number
 }
 
 export default function CreateAssignmentPage() {
@@ -36,7 +37,7 @@ export default function CreateAssignmentPage() {
   // Add state for custom essay creation
   const [isCustomEssay, setIsCustomEssay] = useState(false)
   const [customQuestion, setCustomQuestion] = useState("")
-  const [customCriteria, setCustomCriteria] = useState<Criterion[]>([{ type: "contains", value: "" }])
+  const [customCriteria, setCustomCriteria] = useState<Criterion[]>([{ type: "contains", value: "", deduct: 0.5 }])
 
   // Add state for deadline
   const [deadline, setDeadline] = useState("")
@@ -47,7 +48,7 @@ export default function CreateAssignmentPage() {
     // Check if we already have a min_words criterion
     const hasMinWords = customCriteria.some((c) => c.type === "min_words")
     const newCriterionType = hasMinWords ? "contains" : "contains" // Default to contains if min_words exists
-    setCustomCriteria([...customCriteria, { type: newCriterionType, value: "" }])
+    setCustomCriteria([...customCriteria, { type: newCriterionType, value: "", deduct: 0.5 }])
   }
 
   // Add the handleRemoveCustomCriterion function
@@ -78,6 +79,13 @@ export default function CreateAssignmentPage() {
   const handleCustomCriterionValueChange = (value: string, index: number) => {
     const newCriteria = [...customCriteria]
     newCriteria[index].value = value
+    setCustomCriteria(newCriteria)
+  }
+
+  // Add the handleCustomCriterionDeductChange function
+  const handleCustomCriterionDeductChange = (deduct: string, index: number) => {
+    const newCriteria = [...customCriteria]
+    newCriteria[index].deduct = parseFloat(deduct) || 0.5
     setCustomCriteria(newCriteria)
   }
 
@@ -303,6 +311,18 @@ export default function CreateAssignmentPage() {
                           }
                           value={criterion.value}
                           onChange={(e) => handleCustomCriterionValueChange(e.target.value, index)}
+                          required
+                        />
+                      </div>
+                      <div className="w-32">
+                        <Label htmlFor={`criterion-deduct-${index}`}>Deduct (points)</Label>
+                        <Input
+                          id={`criterion-deduct-${index}`}
+                          type="number"
+                          min={0}
+                          step={0.1}
+                          value={criterion.deduct ?? 0.5}
+                          onChange={e => handleCustomCriterionDeductChange(e.target.value, index)}
                           required
                         />
                       </div>

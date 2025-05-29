@@ -67,9 +67,30 @@ def login():
 @require_role('exam_creator', 'teacher')
 def create_essay():
     data = request.json
+    def normalize_criteria(criteria):
+        new_criteria = []
+        for c in criteria:
+            ctype = c.get('type')
+            deduct = float(c.get('deduct', 0.5))
+            if ctype == 'contains':
+                phrase = c.get('phrase') or c.get('value')
+                new_criteria.append({'type': 'contains', 'phrase': phrase, 'deduct': deduct})
+            elif ctype == 'min_words':
+                count = c.get('count') or c.get('value')
+                try:
+                    count = int(count)
+                except:
+                    count = 0
+                new_criteria.append({'type': 'min_words', 'count': count, 'deduct': deduct})
+            elif ctype == 'has_calculation':
+                new_criteria.append({'type': 'has_calculation', 'deduct': deduct})
+            else:
+                new_criteria.append(c)
+        return new_criteria
+    norm_criteria = normalize_criteria(data['criteria'])
     essay = Essay(
         question=data['question'],
-        criteria=json.dumps(data['criteria']),
+        criteria=json.dumps(norm_criteria),
         teacher_id=data['user_id'] # id của người tạo (exam_creator hoặc teacher)
     )
     db.session.add(essay)
@@ -265,7 +286,27 @@ def update_essay(essay_id):
         return jsonify({'error': 'Essay not found'}), 404
     essay.question = data.get('question', essay.question)
     if 'criteria' in data:
-        essay.criteria = json.dumps(data['criteria'])
+        def normalize_criteria(criteria):
+            new_criteria = []
+            for c in criteria:
+                ctype = c.get('type')
+                deduct = float(c.get('deduct', 0.5))
+                if ctype == 'contains':
+                    phrase = c.get('phrase') or c.get('value')
+                    new_criteria.append({'type': 'contains', 'phrase': phrase, 'deduct': deduct})
+                elif ctype == 'min_words':
+                    count = c.get('count') or c.get('value')
+                    try:
+                        count = int(count)
+                    except:
+                        count = 0
+                    new_criteria.append({'type': 'min_words', 'count': count, 'deduct': deduct})
+                elif ctype == 'has_calculation':
+                    new_criteria.append({'type': 'has_calculation', 'deduct': deduct})
+                else:
+                    new_criteria.append(c)
+            return new_criteria
+        essay.criteria = json.dumps(normalize_criteria(data['criteria']))
     db.session.commit()
     return jsonify({'message': 'Essay updated', 'id': essay.id})
 
@@ -412,4 +453,4 @@ def assignments_for_student():
     ])
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5050) 
+    app.run(debug=True, host='0.0.0.0', port=5000) 

@@ -29,3 +29,9 @@ python app.py
 ## Ghi chú
 - DB: SQLite, file `essay_grading.db` sẽ tự tạo khi chạy lần đầu
 - Grading engine: Dùng spaCy/NLTK kiểm tra tiêu chí cơ bản 
+- Khi tạo đề, tiêu chí phải đúng dạng:
+  - "contains": {"type": "contains", "phrase": "...", "deduct": số_điểm_bị_trừ}
+  - "min_words": {"type": "min_words", "count": số_từ, "deduct": số_điểm_bị_trừ}
+  - "has_calculation": {"type": "has_calculation", "deduct": số_điểm_bị_trừ}
+  - Nếu không có trường "deduct", mặc định trừ 0.5 điểm.
+  - Không dùng key "value". 
